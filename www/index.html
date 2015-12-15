@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+    <title></title>
+
+    <link href="lib/ionic/css/ionic.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+
+    <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
+    <link href="css/ionic.app.css" rel="stylesheet">
+    -->
+
+    <!-- ionic/angularjs js -->
+    <script src="lib/ionic/js/ionic.bundle.js"></script>
+
+    <!-- cordova script (this will be a 404 during development) -->
+    <script src="cordova.js"></script>
+
+    <!-- your app's js -->
+    <script src="js/app.js"></script>
+
+    <!-- Moment -->
+    <script src="lib/moment/moment.min.js"></script>
+
+    <!-- rounded progrssbar for timer on player -->
+    <script src="lib/angular-svg-round-progressbar/roundProgress.min.js"></script>
+  </head>
+  <body ng-app="starter">
+    <div ng-controller="mainCtrl">
+      <ion-pane>
+        <ion-header-bar class="bar-light">
+          <h1 class="title">Timer</h1>
+        </ion-header-bar>
+        <ion-content class="padding">
+          <!-- Here are the 4 main buttons for the exemple, notice that you only have to pass the number of seconds that you want for the timer -->
+          <span class="button button-outline button-positive button-block icon ion-ios-timer-outline button-rounded" ng-click="modal.show();selectTimer(10)">&nbsp;10 sec timer</span>
+          <span class="button button-outline button-dark button-block icon ion-ios-timer-outline button-rounded" ng-click="modal.show();selectTimer(30)">&nbsp;30 sec timer</span>
+          <span class="button button-outline button-balanced button-block icon ion-ios-timer-outline button-rounded" ng-click="modal.show();selectTimer(60)">&nbsp;1 min timer</span>
+          <span class="button button-outline button-royal button-block icon ion-ios-timer-outline button-rounded" ng-click="modal.show();selectTimer(120)">&nbsp;2 min timer</span>
+        </ion-content>
+      </ion-pane>
+    </div>
+  </body>
+</html>
+<!-- Here you have the modal that opens once a timer is selected -->
+<script id="templates/timer.html" type="text/ng-template">
+  <ion-modal-view>
+    <ion-header-bar class="bar bar-header bar-light">
+      <h1 class="title">Timer</h1>
+      <button class="button button-clear button-primary" ng-click="modal.hide();stopTimer(true);">Cancel</button>
+    </ion-header-bar>
+    <ion-content class="padding">
+
+      <!-- Here you have the timer itself with the progress and the time on the middle, notice the css addded to align it see style.css -->
+      <div class="progress-wrapper">
+          <div class="progress">
+              {{humanizeDurationTimer(timer,'s')}}
+          </div>
+        <div round-progress max="timeForTimer" current="timer" clockwise="false" color="#ef473a" rounded="true" class="text-center"></div>
+      </div>
+      <!-- Here you have the different states that the buttons take during the process -->
+      <!-- Before starting -->
+      <div ng-if="!started && !paused && !done">
+        <div class="row">
+          <div class="col">
+            <button class="button button-outline button-balanced button-rounded button-block" ng-click='startTimer()'>
+              Start
+            </button>
+          </div>
+        </div>
+      </div>
+      <!-- Once it is running -->
+      <div ng-if="started && !done">
+        <div class="row">
+          <div class="col">
+            <button class="button button-outline button-energized button-rounded button-block" ng-click='pauseTimer()'>
+            Pause
+            </button>
+          </div>
+          <div class="col">
+            <button class="button button-outline button-assertive button-rounded button-block" ng-click='stopTimer()'>
+              Reset
+            </button>
+          </div>
+        </div>
+      </div>
+      <!-- Once it is paused -->
+      <div ng-if="!started && paused && !done">
+        <div class="row">
+          <div class="col">
+            <button class="button button-outline button-balanced button-rounded button-block" ng-click='startTimer()'>
+              Continue
+            </button>
+          </div>
+          <div class="col">
+            <button class="button button-outline button-assertive button-rounded button-block" ng-click='stopTimer()'>
+              Reset
+            </button>
+          </div>
+        </div>
+      </div>
+      <!-- When it has completed -->
+      <div ng-if="done" class="text-center">
+        <div class="row">
+            <button class="button button-outline button-balanced button-rounded button-block" ng-click="modal.hide();stopTimer(true);">
+              Done
+            </button>
+        </div>
+        <div class="text-center">
+            <i class="ion-ribbon-b bigIcon" style="font-size: 40px;"></i>
+            <br>
+            <h2>Congratulations</h2>
+        </div>
+      </div>
+    </ion-content>
+  </ion-modal-view>
+</script>
