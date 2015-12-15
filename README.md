@@ -1,5 +1,6 @@
 # Ionic timer
-
+###[Demo](http://codepen.io/comapedrosa/pen/gPPwOv)
+###[View on ionic market](https://market.ionic.io/plugins/ionic-timer)
 Ionic timer is a simple yet useful plugin that allows you to create timers in your ionic apps.
 
   - Works with all the platforms that ionic supports
